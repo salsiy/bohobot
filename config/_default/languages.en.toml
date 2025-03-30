@@ -1,7 +1,7 @@
 languageCode = "en"
 languageName = "English"
 weight = 1
-title = "Red Blowfish"
+title = "Bohobot"
 
 [params]
   displayName = "EN"
@@ -9,7 +9,7 @@ title = "Red Blowfish"
   rtl = false
   # logo = "img/logo.png"
   description = "My awesome website"
-  copyright = "Bohobot { year }"
+  copyright = "© {year} BohoBot. All rights reserved."
   dateFormat = "2 January 2006"
 
 [params.author]
