@@ -1,13 +1,43 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Categories on My New Hugo Site</title>
+    <title>Categories on Red Blowfish</title>
     <link>http://localhost:1313/categories/</link>
-    <description>Recent content in Categories on My New Hugo Site</description>
+    <description>Recent content in Categories on Red Blowfish</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <copyright>© 2025 </copyright>
-    <atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>Bohobot 2025</copyright>
+    <lastBuildDate>Tue, 17 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>DevOps</title>
+      <link>http://localhost:1313/categories/devops/</link>
+      <pubDate>Tue, 17 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/categories/devops/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Poland Life</title>
+      <link>http://localhost:1313/categories/poland-life/</link>
+      <pubDate>Mon, 16 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/categories/poland-life/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>India Life</title>
+      <link>http://localhost:1313/categories/india-life/</link>
+      <pubDate>Sun, 15 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/categories/india-life/</guid>
+      <description></description>
+      
+    </item>
     
   </channel>
 </rss>

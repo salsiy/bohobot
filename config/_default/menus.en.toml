@@ -4,8 +4,26 @@
   weight = 10
 
 [[main]]
-  name = "Posts"
-  pageRef = "posts"
+  name = "About"
+  pageRef = "/about"
   weight = 20
 
-# Add other menu items as needed
+[[main]]
+  name = "India Life"
+  pageRef = "/posts/india-life"
+  weight = 30
+
+[[main]]
+  name = "Poland Life"
+  pageRef = "/posts/poland-life"
+  weight = 40
+
+[[main]]
+  name = "DevOps"
+  pageRef = "/posts/devops"
+  weight = 50
+
+[[main]]
+  name = "Contact"
+  pageRef = "/contact"
+  weight = 60

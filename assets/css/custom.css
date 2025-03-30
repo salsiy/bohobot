@@ -1,0 +1,14 @@
+/* Custom font sizes */
+.profile-subtitle {
+  font-size: 1.1rem;
+}
+
+/* Better spacing for articles */
+article {
+  line-height: 1.6;
+}
+
+/* Social icons styling */
+.social-icons {
+  margin-top: 2rem;
+}

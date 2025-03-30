@@ -1,0 +1,23 @@
+languageCode = "en"
+languageName = "English"
+weight = 1
+title = "Red Blowfish"
+
+[params]
+  displayName = "EN"
+  isoCode = "en"
+  rtl = false
+  # logo = "img/logo.png"
+  description = "My awesome website"
+  copyright = "Bohobot { year }"
+  dateFormat = "2 January 2006"
+
+[params.author]
+  name = "Siyad Salam"
+  image = "img/avatar.png"
+  headline = "This is my website with my links"
+  bio = "A little bit about you"
+   links = [
+     { github = "https://github.com/salsiy" },
+     { linkedin = "https://www.linkedin.com/in/siyadsalam/"}
+   ]

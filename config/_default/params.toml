@@ -1,27 +1,47 @@
-# Change the color scheme
-colorScheme = "autumn"  # Options: blowfish, avocado, fire, ocean, forest, etc.
+colorScheme = "autumn"
+defaultAppearance = "light" # valid options: light or dark
+autoSwitchAppearance = false
 
-# Homepage configuration
+enableSearch = true
+enableCodeCopy = false
+
+replyByEmail = false
+
+# mainSections = ["section1", "section2"]
+# robots = ""
+
+disableImageOptimization = false
+disableTextInHeader = false
+
+
 [homepage]
-  layout = "profile"  # Options: page, profile, hero, card, background
+  layout = "profile"
   showRecent = true
-  showRecentItems = 5
+  showRecentItems = 6
+  recentHeading = "Latest Stories"
+  profileAlt = "Your Name"
+  profileSubtitle = "DevOps Engineer | India & Poland Stories"
 
-# Article configuration
 [article]
   showDate = true
   showAuthor = true
   showBreadcrumbs = true
   showDraftLabel = true
   showReadingTime = true
-  
-# Header configuration
-[header]
-  layout = "basic"  # Options: basic, fixed
+  showTableOfContents = true
+  showTaxonomies = true
+  showWordCount = true
+  taxonomies = ["tags", "categories"]
 
-# Footer configuration
+[header]
+  layout = "fixed"
+  sticky = true
+  showTitle = true
+
 [footer]
   showCopyright = true
   showThemeAttribution = false
   showAppearanceSwitcher = true
   showScrollToTop = true
+  copyrightText = "© {year} Your Name. All rights reserved."
+

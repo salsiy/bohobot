@@ -1,4 +1,4 @@
 ---
-title: "Posts"
-description: "My blog posts"
+title: "All Posts"
+description: "Collection of all articles"
 ---
