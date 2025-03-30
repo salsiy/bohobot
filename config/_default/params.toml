@@ -1,4 +1,4 @@
-colorScheme = "autumn"
+colorScheme = "fire"
 defaultAppearance = "light" # valid options: light or dark
 autoSwitchAppearance = false
 
@@ -21,6 +21,7 @@ disableTextInHeader = false
   recentHeading = "Latest Stories"
   profileAlt = "Your Name"
   profileSubtitle = "DevOps Engineer | India & Poland Stories"
+  homepageImage = "img/cover.png" 
 
 [article]
   showDate = true
