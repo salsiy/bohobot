@@ -9,7 +9,7 @@ title = "Bohobot"
   rtl = false
   # logo = "img/logo.png"
   description = "My awesome website"
-  copyright = "© {year} BohoBot. All rights reserved."
+  copyright = "© { year } BohoBot. All rights reserved."
   dateFormat = "2 January 2006"
 
 [params.author]
