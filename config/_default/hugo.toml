@@ -3,8 +3,8 @@
 # https://blowfish.page/docs/getting-started/
 
 theme = "blowfish"
-#baseURL = "https://localhost:1313"
-baseURL = "https://bohobot.com"
+baseURL = "https://localhost:1313"
+#baseURL = "https://bohobot.com"
 defaultContentLanguage = "en"
 disableLanguages = [] #to allow translation work requiring shipping to production
 
