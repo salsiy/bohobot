@@ -2,12 +2,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>All Posts on Bohobot</title>
-    <link>http://localhost:1313/posts/</link>
+    <link>http://localhost:63655/posts/</link>
     <description>Recent content in All Posts on Bohobot</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© 2025 BohoBot. All rights reserved.</copyright>
-    <lastBuildDate>Tue, 17 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 17 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:63655/posts/index.xml" rel="self" type="application/rss+xml" />
     
   </channel>
 </rss>

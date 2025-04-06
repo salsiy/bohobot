@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Welcome on Bohobot</title>
-    <link>http://localhost:1313/</link>
+    <link>http://localhost:63655/</link>
     <description>Recent content in Welcome on Bohobot</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© 2025 BohoBot. All rights reserved.</copyright>
-    <lastBuildDate>Mon, 20 Nov 2023 14:30:00 +0530</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 20 Nov 2023 14:30:00 +0530</lastBuildDate><atom:link href="http://localhost:63655/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Getting Started with DevOps</title>
-      <link>http://localhost:1313/posts/devops/first-post/</link>
+      <link>http://localhost:63655/posts/devops/first-post/</link>
       <pubDate>Tue, 17 Oct 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/posts/devops/first-post/</guid>
+      <guid>http://localhost:63655/posts/devops/first-post/</guid>
       <description>&lt;h2 class=&#34;relative group&#34;&gt;What is DevOps? 
     &lt;div id=&#34;what-is-devops&#34; class=&#34;anchor&#34;&gt;&lt;/div&gt;
     
@@ -61,10 +61,10 @@
     
     <item>
       <title>My First Impressions of Poland</title>
-      <link>http://localhost:1313/posts/poland-life/first-post/</link>
+      <link>http://localhost:63655/posts/poland-life/first-post/</link>
       <pubDate>Mon, 16 Oct 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/posts/poland-life/first-post/</guid>
+      <guid>http://localhost:63655/posts/poland-life/first-post/</guid>
       <description>&lt;h2 class=&#34;relative group&#34;&gt;Arriving in Poland 
     &lt;div id=&#34;arriving-in-poland&#34; class=&#34;anchor&#34;&gt;&lt;/div&gt;
     
@@ -112,10 +112,10 @@
     
     <item>
       <title>My First Memories of India</title>
-      <link>http://localhost:1313/posts/india-life/first-post/</link>
+      <link>http://localhost:63655/posts/india-life/first-post/</link>
       <pubDate>Sun, 15 Oct 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/posts/india-life/first-post/</guid>
+      <guid>http://localhost:63655/posts/india-life/first-post/</guid>
       <description>&lt;h2 class=&#34;relative group&#34;&gt;Growing Up in [Your City] 
     &lt;div id=&#34;growing-up-in-your-city&#34; class=&#34;anchor&#34;&gt;&lt;/div&gt;
     
@@ -163,10 +163,10 @@
     
     <item>
       <title>About Me</title>
-      <link>http://localhost:1313/about/</link>
+      <link>http://localhost:63655/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/about/</guid>
+      <guid>http://localhost:63655/about/</guid>
       <description>&lt;p&gt;I&amp;rsquo;m a DevOps engineer currently living in Poland with roots in India.&lt;/p&gt;
 &lt;p&gt;This website documents my personal and professional journey across cultures and technologies.&lt;/p&gt;
 
@@ -210,10 +210,10 @@
     
     <item>
       <title>Contact</title>
-      <link>http://localhost:1313/contact/</link>
+      <link>http://localhost:63655/contact/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/contact/</guid>
+      <guid>http://localhost:63655/contact/</guid>
       <description>&lt;h2 class=&#34;relative group&#34;&gt;Connect With Me 
     &lt;div id=&#34;connect-with-me&#34; class=&#34;anchor&#34;&gt;&lt;/div&gt;
     

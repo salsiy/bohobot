@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Memories on Bohobot</title>
-    <link>http://localhost:1313/tags/memories/</link>
+    <link>http://localhost:63655/tags/memories/</link>
     <description>Recent content in Memories on Bohobot</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© 2025 BohoBot. All rights reserved.</copyright>
-    <lastBuildDate>Sun, 15 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/memories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 15 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:63655/tags/memories/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>My First Memories of India</title>
-      <link>http://localhost:1313/posts/india-life/first-post/</link>
+      <link>http://localhost:63655/posts/india-life/first-post/</link>
       <pubDate>Sun, 15 Oct 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/posts/india-life/first-post/</guid>
+      <guid>http://localhost:63655/posts/india-life/first-post/</guid>
       <description>&lt;h2 class=&#34;relative group&#34;&gt;Growing Up in [Your City] 
     &lt;div id=&#34;growing-up-in-your-city&#34; class=&#34;anchor&#34;&gt;&lt;/div&gt;
     
