@@ -1,3 +1,4 @@
 baseURL = 'https://bohobot.com'
 languageCode = 'en-us'
 title = 'BohoBot'
+googleAnalytics = "G-D8LNCXH2GF"

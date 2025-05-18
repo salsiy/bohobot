@@ -12,10 +12,10 @@ tags = ["blog", "minimal", "responsive", "dark mode", "dark", "light", "tailwind
 features = ["syntax highlighting", "dark mode", "emoji", "firebase", "views"]
 
 [author]
-  name = "Nuno Coracao"
-  homepage = "https://n9o.xyz/"
+  name = "siyad"
+  homepage = "https://bohobot.com/"
 
 [original]
-  author = "James Panther"
-  homepage = "https://jamespanther.com/"
-  repo = "https://github.com/jpanther/congo"
+  author = "siyad"
+  homepage = "https://bohobot.com/"
+  repo = ""
