@@ -1,5 +1,6 @@
 ---
 title: "Contact"
+date: 1991-11-02
 description: "Get in touch with me"
 ---
 
