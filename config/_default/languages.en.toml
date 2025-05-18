@@ -15,7 +15,7 @@ title = "Bohobot"
 [params.author]
   name = "Siyad Salam"
   image = "img/avatar.png"
-  headline = "This is my website with my links"
+  headline = ""
   bio = "A little bit about you"
    links = [
      { github = "https://github.com/salsiy" },
