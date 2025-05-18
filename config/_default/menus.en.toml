@@ -14,13 +14,8 @@
   weight = 30
 
 [[main]]
-  name = "Poland Life"
-  pageRef = "/posts/poland-life"
-  weight = 40
-
-[[main]]
-  name = "DevOps"
-  pageRef = "/posts/devops"
+  name = "Tech Logs"
+  pageRef = "/posts/tech-logs"
   weight = 50
 
 [[main]]
