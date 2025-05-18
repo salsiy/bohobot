@@ -4,6 +4,4 @@ date: 1991-11-02
 description: "Learn more about my journey"
 ---
 
-I'm a DevOps engineer currently living in Poland with roots in India. 
-
-This website documents my personal and professional journey across cultures and technologies.
+Tech enthusiast exploring the world of DevOps, living in Poland, proudly rooted in India. 

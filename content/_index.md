@@ -1,10 +1,10 @@
 ---
 title: "Welcome"
-description: "Personal website of Your Name"
+description: "Personal website of Siyad Salam (Ziad)"
 ---
 
-Hi, I'm **Your Name**. 
+Hi, I'm **Siyad Salam** (also known as **Ziad**).
 
-This is my personal space where I share stories about my life in India and Poland, and write about my DevOps journey.
+Welcome to my personal space where I share stories about my life in India and Poland, along with insights from my tech journey
 
-Explore my [India stories](/posts/india-life), [Poland experiences](/posts/poland-life), or read my [technical articles](/posts/devops).
+Explore my [technical articles](/posts/tech-logs).
