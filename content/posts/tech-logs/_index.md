@@ -1,4 +1,4 @@
 ---
-title: "DevOps Articles"
-description: "Technical articles about DevOps"
+title: "Tech Logs"
+description: "Technical articles"
 ---
