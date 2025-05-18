@@ -1,5 +1,6 @@
 ---
 title: "About Me"
+date: 1991-11-02
 description: "Learn more about my journey"
 ---
 
