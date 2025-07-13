@@ -26,6 +26,7 @@ disableTextInHeader = false
 [article]
   showDate = true
   showAuthor = true
+  showComments = true
   showBreadcrumbs = true
   showDraftLabel = true
   showReadingTime = true
