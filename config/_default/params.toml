@@ -47,3 +47,12 @@ disableTextInHeader = false
   showScrollToTop = true
   copyrightText = "© {year} Your Name. All rights reserved."
 
+[posthogAnalytics]
+  apiKey = "phc_lhvE7ohuFrNFfpCsyNDQRZxOzCpfL515XudMQVID9ol"
+  host = "https://us.i.posthog.com"
+  defaults = "2025-05-24"
+  personProfiles = "identified_only"  # or 'always' to create profiles for anonymous users
+  capturePageview = true
+  capturePageleave = true
+  disableSessionRecording = false  # Session recording enabled
+
