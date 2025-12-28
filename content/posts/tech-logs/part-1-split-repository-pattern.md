@@ -62,6 +62,10 @@ This is Part 1 of my series on [Production-Grade Terraform Patterns](/series/pro
 
 This approach is heavily inspired by the reference architectures provided by Gruntwork. Specifically, it adapts the patterns demonstrated in their [Infrastructure Catalog](https://github.com/gruntwork-io/terragrunt-infrastructure-catalog-example) and [Live Stacks](https://github.com/gruntwork-io/terragrunt-infrastructure-live-stacks-example) examples.
 
+**Source Code:**
+*   [Terraform Patterns Modules](https://github.com/salsiy/terraform-patterns-modules)
+*   [Terraform Patterns Live](https://github.com/salsiy/terraform-patterns-live)
+
 Before we start, I assume you have some basic familiarity with Terraform and Terragrunt. If you are just getting started, I highly recommend checking out the official [HashiCorp Terraform Tutorials](https://developer.hashicorp.com/terraform/tutorials) and the [Terragrunt Quick Start Guide](https://terragrunt.gruntwork.io/docs/getting-started/quick-start/). Also, for the purpose of this demonstration, I will be using **AWS Cloud**.
 
 If you have used Terraform for personal projects, you know how satisfying `terraform apply` can be. You write a `main.tf`, run a command, and infrastructure appears.
@@ -147,21 +151,21 @@ terraform-patterns-modules/     # 1. The Logic
 terraform-patterns-live/        # 2. The State
 ├── root.hcl                # 1. Global Configuration (State Bucket, Locking)
 ├── tags.yaml               # 2. Global Tags
-├── _envcommon/             # 3. DRY Module Configs
-│   ├── vpc.hcl
-│   └── ecs-cluster.hcl
 ├── production-account/     # 4. Account Isolation
+│   ├── _envcommon/         # 3. DRY Module Configs (Account Scoped)
+│   │   ├── vpc.hcl
+│   │   └── ecs-cluster.hcl
 │   └── us-east-1/          # 5. Region Isolation
 │       ├── vpc/            # 6. Component
 │       │   └── terragrunt.hcl
 │       └── ecs-cluster/
 │           └── terragrunt.hcl
 ├── development-account/
+│   ├── _envcommon/
 │   └── us-east-1/
 │       └── ...
 └── staging-account/
-    └── us-east-1/
-        └── ...
+    └── ...
 ```
 
 <br>
@@ -248,7 +252,7 @@ include "root" {
 }
 
 include "envcommon" {
-  path = "${dirname(find_in_parent_folders("root.hcl"))}/_envcommon/ecs-cluster.hcl"
+  path = "${dirname(find_in_parent_folders("account.hcl"))}/_envcommon/ecs-cluster.hcl"
 }
 
 inputs = {
