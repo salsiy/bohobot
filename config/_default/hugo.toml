@@ -2,7 +2,7 @@ theme = "blowfish"
 baseURL = "https://bohobot.com"
 defaultContentLanguage = "en"
 buildFuture = true
-buildDrafts = true
+buildDrafts = false
 
 [taxonomies]
   tag = "tags"
