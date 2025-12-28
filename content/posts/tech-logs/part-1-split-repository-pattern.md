@@ -63,8 +63,8 @@ This is Part 1 of my series on [Production-Grade Terraform Patterns](/series/pro
 This approach is heavily inspired by the reference architectures provided by Gruntwork. Specifically, it adapts the patterns demonstrated in their [Infrastructure Catalog](https://github.com/gruntwork-io/terragrunt-infrastructure-catalog-example) and [Live Stacks](https://github.com/gruntwork-io/terragrunt-infrastructure-live-stacks-example) examples.
 
 **Source Code:**
-*   [Terraform Patterns Modules](https://github.com/salsiy/terraform-patterns-modules)
-*   [Terraform Patterns Live](https://github.com/salsiy/terraform-patterns-live)
+*   Modules: https://github.com/salsiy/terraform-patterns-modules
+*   Live: https://github.com/salsiy/terraform-patterns-live
 
 Before we start, I assume you have some basic familiarity with Terraform and Terragrunt. If you are just getting started, I highly recommend checking out the official [HashiCorp Terraform Tutorials](https://developer.hashicorp.com/terraform/tutorials) and the [Terragrunt Quick Start Guide](https://terragrunt.gruntwork.io/docs/getting-started/quick-start/). Also, for the purpose of this demonstration, I will be using **AWS Cloud**.
 
