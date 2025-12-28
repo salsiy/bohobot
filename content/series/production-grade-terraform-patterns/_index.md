@@ -9,7 +9,7 @@ cascade:
 
 Welcome to the **Production-Grade Terraform Patterns** series.
 
-In this 5-part guide, we walk through the journey of maturing your infrastructure from simple scripts to a robust, self-updating platform.
+In this 6-part guide, I walk through the journey of maturing your infrastructure from simple scripts to a robust, self-updating platform.
 
 ### What you will learn:
 *   **Part 1**: How to structure repositories using the Split-Repo Pattern to isolate failure domains.
@@ -17,3 +17,4 @@ In this 5-part guide, we walk through the journey of maturing your infrastructur
 *   **Part 3**: How to automate the entire release lifecycle (Changelogs, Tags) using Release Please.
 *   **Part 4**: Why you should favor secure Git Tags over Private Registries for internal code.
 *   **Part 5**: How to automate dependency upgrades across 100+ environments using Renovate.
+*   **Part 6**: How to scale execution securely using TACOS (Atlantis, Digger).

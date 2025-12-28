@@ -1,19 +1,39 @@
+---
 title: "Part 4: Consuming Terraform Modules — Git Tags vs Private Registry"
 date: 2025-12-20
 series_order: 4
 series: ["Production-Grade Terraform Patterns"]
 tags: ["terraform", "terragrunt", "security", "git", "infrastructure-as-code"]
+draft: true
 ---
 
-This is Part 4 of our series on [Production-Grade Terraform Patterns](/series/production-grade-terraform-patterns/). In [Part 3](/posts/tech-logs/part-3-automating-releases-release-please/), we automated the release of our modules.
+This is Part 4 of my series on [Production-Grade Terraform Patterns](/series/production-grade-terraform-patterns/). In [Part 3](/posts/tech-logs/part-3-automating-releases-release-please/), I automated the release of my modules.
 
-Now, we have a Modules Repository with a tag `v1.1.0`. We have a Live Repository where we want to build that infrastructure. How do we connect them?
+Now, I have a Modules Repository with a tag `v1.1.0`. I have a Live Repository where I want to build that infrastructure. How do I connect them?
 
 There are two primary ways to consume modules:
 1.  **Git References**: Pointing directly to a tag in your Version Control System.
 2.  **Registry Protocol**: Using a dedicated artifact server (TFC, Artifactory).
 
 This is not just a syntax choice; it's a trade-off between simplicity and capability.
+
+{{< mermaid >}}
+flowchart LR
+    subgraph Option1 ["Option 1: Git Tags"]
+        direction TB
+        Live1["Live Repo"] -->|"git clone ...?ref=v1.0"| Git["GitHub/GitLab"]
+        Git -->|"Source Code"| Live1
+    end
+
+    subgraph Option2 ["Option 2: Private Registry"]
+        direction TB
+        Live2["Live Repo"] -->|"request 1.0.x"| Reg["Terraform Cloud / Artifactory"]
+        Reg -->|"Download .tar.gz"| Live2
+    end
+    
+    style Option1 fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+    style Option2 fill:#ffebee,stroke:#c62828,stroke-width:2px
+{{< /mermaid >}}
 
 ## Option 1: The Git Reference (Pragmatic Choice)
 
@@ -89,10 +109,10 @@ This tells git: "Whenever you see `https://github.com`, silently inject these cr
 
 ## Summary
 
-We have established our consumption model:
+I have established my consumption model:
 1.  **Release Please** tags `v1.1.0`.
 2.  **Terragrunt** references that tag via secure Git URL.
 
-But who updates that tag? If we have 50 environments using `v1.0.0`, do we manually edit 50 files?
+But who updates that tag? If I have 50 environments using `v1.0.0`, do I manually edit 50 files?
 
-In **Part 5**, we will deploy **Renovate Bot** to close the loop, automatically detecting releases and updating your live infrastructure.
+In **Part 5**, I will deploy **Renovate Bot** to close the loop, automatically detecting releases and updating your live infrastructure.

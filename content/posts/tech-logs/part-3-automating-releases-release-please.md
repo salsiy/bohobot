@@ -1,11 +1,13 @@
+---
 title: "Part 3: Automating Semantic Versioning with Release Please"
 date: 2025-12-20
 series_order: 3
 series: ["Production-Grade Terraform Patterns"]
 tags: ["terraform", "release-please", "github-actions", "cicd", "automation"]
+draft: true
 ---
 
-This is Part 3 of our series on [Production-Grade Terraform Patterns](/series/production-grade-terraform-patterns/). In [Part 2](/posts/tech-logs/part-2-production-ready-modules/), we established standards for module creation. Now, we solve the biggest friction point in module management: **Release Engineering**.
+This is Part 3 of my series on [Production-Grade Terraform Patterns](/series/production-grade-terraform-patterns/). In [Part 2](/posts/tech-logs/part-2-production-ready-modules/), I established standards for module creation. Now, I solve the biggest friction point in module management: **Release Engineering**.
 
 Treating infrastructure as software means you must version it. But if an engineer updates a module, they shouldn't have to manually calculate semantic versions ("Is this a minor or patch?"), write changelogs, or tag releases.
 
@@ -17,9 +19,9 @@ The solution is to automate this entire lifecycle using **Release Please**.
 
 ## The Strategy: Conventional Commits
 
-Automation requires structured data. We cannot automate versioning if commit messages are "fixed stuff" or "updated vpc".
+Automation requires structured data. You cannot automate versioning if commit messages are "fixed stuff" or "updated vpc".
 
-We adopt **Conventional Commits**:
+I adopt **Conventional Commits**:
 
 | Prefix | SemVer Impact | Example | Result |
 | :--- | :--- | :--- | :--- |
@@ -31,7 +33,7 @@ The `!` indicates a breaking change (Major), regardless of the prefix.
 
 ## Configuring Release Please in a Monorepo
 
-We often keep multiple modules in one repository (a Monorepo). A change to the VPC module should not trigger a release for the RDS module.
+I often keep multiple modules in one repository (a Monorepo). A change to the VPC module should not trigger a release for the RDS module.
 
 Release Please uses a **Manifest-Driven** approach to handle this.
 
@@ -48,7 +50,7 @@ This file tracks the current version of every component.
 
 ### 2. The Configuration: `release-please-config.json`
 
-This defines the strategy. We use the `terraform-module` type, which knows how to update Terraform files and READMEs.
+This defines the strategy. I use the `terraform-module` type, which knows how to update Terraform files and READMEs.
 
 ```json
 {
@@ -68,7 +70,7 @@ This defines the strategy. We use the `terraform-module` type, which knows how t
 
 ## The Workflow: GitHub Actions
 
-We create a workflow `.github/workflows/release.yaml`.
+I create a workflow `.github/workflows/release.yaml`.
 
 This workflow utilizes a specific pattern: **The Persistent Release PR**.
 When you merge a `feat:` into `main`, Release Please doesn't release immediately. It opens (or updates) a dedicated "Release PR". This PR contains the calculated Changelog and version bump.
@@ -95,7 +97,7 @@ jobs:
 
 ## Internal Version Files
 
-Standard Terraform doesn't have a `package.json` with a version field. To let our Terraform code know its own version (e.g., for tagging resources), we use a generic internal file.
+Standard Terraform doesn't have a `package.json` with a version field. To let our Terraform code know its own version (e.g., for tagging resources), I use a generic internal file.
 
 In `modules/vpc/versions.tf`:
 
@@ -106,7 +108,7 @@ locals {
 }
 ```
 
-We update `release-please-config.json` to target this file:
+I update `release-please-config.json` to target this file:
 
 ```json
 "extra-files": [
@@ -120,6 +122,39 @@ We update `release-please-config.json` to target this file:
 
 Now, Release Please will automatically bump this local variable whenever it cuts a release.
 
+{{< mermaid >}}
+sequenceDiagram
+    participant Dev as Developer
+    participant Main as Main Branch
+    participant RP as Release Please (Bot)
+    participant PR as Release PR
+    participant Tag as Git Tag
+
+    Dev->>Main: git commit -m "feat: new vpc"
+    activate Main
+    Main->>RP: Trigger Action
+    deactivate Main
+    activate RP
+    RP->>RP: Analyze Commits (feat = minor)
+    RP->>PR: Open/Update "chore: release 1.1.0"
+    deactivate RP
+    
+    Note over PR: Contains CHANGELOG.md<br/>and version bumps
+    
+    Dev->>PR: Review & Merge
+    activate PR
+    PR->>Main: Merge Pull Request
+    deactivate PR
+    
+    activate Main
+    Main->>RP: Trigger Action (on Merge)
+    deactivate Main
+    activate RP
+    RP->>Tag: Create Tag v1.1.0
+    RP->>RP: Publish GitHub Release
+    deactivate RP
+{{< /mermaid >}}
+
 ## Summary
 
 This workflow transforms the developer experience:
@@ -130,4 +165,4 @@ This workflow transforms the developer experience:
 4.  **Release**: Team Lead merges that PR.
 5.  **Publish**: Tag is created, Release is published.
 
-We now have strictly versioned, immutable artifacts. In **Part 4**, we will decide how to consume these artifacts: via simple Git Tags or a Private Registry.
+I now have strictly versioned, immutable artifacts. In **Part 4**, I will decide how to consume these artifacts: via simple Git Tags or a Private Registry.
