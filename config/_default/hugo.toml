@@ -1,3 +1,11 @@
 theme = "blowfish"
 baseURL = "https://bohobot.com"
 defaultContentLanguage = "en"
+buildFuture = true
+buildDrafts = false
+
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+  author = "authors"
+  series = "series"

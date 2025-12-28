@@ -35,6 +35,18 @@ disableTextInHeader = false
   showWordCount = true
   taxonomies = ["tags", "categories"]
 
+[list]
+  showHero = true
+  heroStyle = "basic"
+  showBreadcrumbs = true
+  showTableOfContents = true
+
+[term]
+  showHero = true
+  heroStyle = "basic"
+  showBreadcrumbs = true
+  showTableOfContents = true
+
 [header]
   layout = "fixed"
   sticky = true
@@ -55,4 +67,3 @@ disableTextInHeader = false
   capturePageview = true
   capturePageleave = true
   disableSessionRecording = false  # Session recording enabled
-
