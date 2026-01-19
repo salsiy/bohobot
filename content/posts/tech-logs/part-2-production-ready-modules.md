@@ -4,7 +4,7 @@ date: 2025-12-20
 series_order: 2
 series: ["Production-Grade Terraform Patterns"]
 tags: ["terraform", "modules", "best-practices", "infrastructure-as-code"]
-draft: true
+draft: false
 ---
 
 This is Part 2 of my series on [Production-Grade Terraform Patterns](/series/production-grade-terraform-patterns/). In [Part 1](/posts/tech-logs/part-1-split-repository-pattern/), I established the architecture for scaling infrastructure. Now, I focus on the building blocks: the **Modules**.
@@ -59,6 +59,43 @@ Every module must contain these three files at a minimum:
 *   `main.tf`: **The Logic**. Contains the resources (e.g. `aws_s3_bucket`, `aws_instance`). Keep it focused.
 *   `variables.tf`: **The Interface**. Defines every input the module accepts. This is your API contract.
 *   `outputs.tf`: **The Return Values**. Exposes IDs, ARNs, and endpoints to the consumer.
+
+### 2. Don't Reinvent the Wheel: The Wrapper Pattern
+
+After years of writing modules, my biggest recommendation is: **Do not write modules from scratch.**
+
+Unless you have very specific requirements, use the open-source community modules (like `terraform-aws-modules`) and **wrap** them. This gives you the stability of a battle-tested module while keeping your specific defaults (Standardization).
+
+For example, instead of defining `resource "aws_s3_bucket" "main" {...}` with 50 lines of configuration, wrap the community module:
+
+```hcl
+module "s3_bucket" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "5.9.1"
+
+  bucket = var.bucket_name
+
+  # Security Defaults: Enforced for everyone using this module
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+
+  versioning = {
+    enabled = var.versioning
+  }
+
+  server_side_encryption_configuration = {
+    rule = {
+      apply_server_side_encryption_by_default = {
+        sse_algorithm = "AES256"
+      }
+    }
+  }
+}
+```
+
+This ensures that every bucket created via your platform has `block_public_acls` enabled by default, without every developer needing to remember it.
 
 ### 2. Input Validation (The Contract)
 
@@ -176,7 +213,47 @@ checkov -d .
 
 By adding these to your CI pipeline, you ensure that **Quality** and **Security** are baked into every module version.
 
-## Summary
+By adding these to your CI pipeline, you ensure that **Quality** and **Security** are baked into every module version.
+
+### 5. Automated Integration Testing (Terratest)
+
+Static analysis is great, but it can't prove that your infrastructure actually *works*. For that, you need integration tests. I use **[Terratest](https://github.com/gruntwork-io/terratest)**, a Go library that helps you write automated tests for your infrastructure code.
+
+It works by:
+1.  **Deploying** your real infrastructure (using `terraform apply`).
+2.  **Validating** it works (e.g., making an HTTP request to your load balancer or checking if an S3 bucket exists).
+3.  **Destroying** it (using `terraform destroy`).
+
+A simple test for our S3 module might look like this:
+
+```go
+package test
+
+import (
+	"testing"
+	"github.com/gruntwork-io/terratest/modules/terraform"
+	"github.com/stretchr/testify/assert"
+)
+
+func TestS3Module(t *testing.T) {
+	terraformOptions := &terraform.Options{
+		// The path to where our Terraform code is located
+		TerraformDir: "../examples/s3-private",
+	}
+
+	// At the end of the test, run `terraform destroy` to clean up any resources that were created
+	defer terraform.Destroy(t, terraformOptions)
+
+	// This will run `terraform init` and `terraform apply` and fail the test if there are any errors
+	terraform.InitAndApply(t, terraformOptions)
+
+	// Validate your code works
+	output := terraform.Output(t, terraformOptions, "bucket_arn")
+	assert.Contains(t, output, "arn:aws:s3")
+}
+```
+
+This gives you the confidence to refactor and upgrade versions without fear of breaking production.
 
 I have defined what makes a module "Production-Ready":
 
