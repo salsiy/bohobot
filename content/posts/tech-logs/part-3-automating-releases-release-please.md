@@ -1,6 +1,6 @@
 ---
 title: "Part 3: Automating Semantic Versioning with Release Please"
-date: 2025-12-20
+date: 2025-12-28
 series_order: 3
 series: ["Production-Grade Terraform Patterns"]
 tags: ["terraform", "release-please", "github-actions", "cicd", "automation"]

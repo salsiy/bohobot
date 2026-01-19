@@ -1,6 +1,6 @@
 ---
 title: "Part 4: Consuming Terraform Modules — Git Tags vs Private Registry"
-date: 2025-12-20
+date: 2026-01-01
 series_order: 4
 series: ["Production-Grade Terraform Patterns"]
 tags: ["terraform", "terragrunt", "security", "git", "infrastructure-as-code"]
@@ -9,7 +9,7 @@ draft: true
 
 This is Part 4 of my series on [Production-Grade Terraform Patterns](/series/production-grade-terraform-patterns/). In [Part 3](/posts/tech-logs/part-3-automating-releases-release-please/), I automated the release of my modules.
 
-Now, I have a Modules Repository with a tag `v1.1.0`. I have a Live Repository where I want to build that infrastructure. How do I connect them?
+Now, I have a Modules Repository with a tag `vpc-v1.1.0`. I have a Live Repository where I want to build that infrastructure. How do I connect them?
 
 There are two primary ways to consume modules:
 1.  **Git References**: Pointing directly to a tag in your Version Control System.
@@ -21,7 +21,7 @@ This is not just a syntax choice; it's a trade-off between simplicity and capabi
 flowchart LR
     subgraph Option1 ["Option 1: Git Tags"]
         direction TB
-        Live1["Live Repo"] -->|"git clone ...?ref=v1.0"| Git["GitHub/GitLab"]
+        Live1["Live Repo"] -->|"git clone ...?ref=vpc-v1.1.0"| Git["GitHub/GitLab"]
         Git -->|"Source Code"| Live1
     end
 
@@ -47,7 +47,7 @@ In your `terragrunt.hcl`:
 terraform {
   # The double slash // tells Terraform to clone the repo content
   # and then enter the subfolder modules/vpc
-  source = "git::https://github.com/my-org/infra-modules.git//modules/vpc?ref=v1.1.0"
+  source = "git::https://github.com/my-org/infra-modules.git//modules/vpc?ref=vpc-v1.1.0"
 }
 ```
 
@@ -110,7 +110,7 @@ This tells git: "Whenever you see `https://github.com`, silently inject these cr
 ## Summary
 
 I have established my consumption model:
-1.  **Release Please** tags `v1.1.0`.
+1.  **Release Please** tags `vpc-v1.1.0`.
 2.  **Terragrunt** references that tag via secure Git URL.
 
 But who updates that tag? If I have 50 environments using `v1.0.0`, do I manually edit 50 files?

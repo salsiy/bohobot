@@ -1,6 +1,6 @@
 ---
 title: "Part 5: Automating Dependency Updates with Renovate"
-date: 2025-12-20
+date: 2026-01-05
 series_order: 5
 series: ["Production-Grade Terraform Patterns"]
 tags: ["terraform", "terragrunt", "renovate", "automation", "devops"]
@@ -9,7 +9,7 @@ draft: true
 
 This is Part 5 of my series on [Production-Grade Terraform Patterns](/series/production-grade-terraform-patterns/). I have split my repositories, enforced versioning, automated releases, and set up my consumption model.
 
-In a traditional setup, upgrading infrastructure is painful. A developer releases `v1.1.0`, sends a Slack message, and... silence. Three months later, Prod is still on `v0.9.0`.
+In a traditional setup, upgrading infrastructure is painful. A developer releases `vpc-v1.1.0`, sends a Slack message, and... silence. Three months later, Prod is still on `vpc-v0.9.0`.
 
 To build a robust infrastructure, upgrades should be **pushed to the consumer**, not pulled.
 
@@ -17,18 +17,18 @@ I achieve this with **Renovate Bot**.
 
 ## The Workflow
 
-1.  **Release**: Release Please tags `v1.1.0` in your Modules Repo.
-2.  **Detection**: Renovate scans your Live Repo, sees `v1.0.0`, and detects the new tag.
-3.  **Proposal**: Renovate opens a Pull Request: `chore(deps): update module vpc to v1.1.0`.
+1.  **Release**: Release Please tags `vpc-v1.1.0` in your Modules Repo.
+2.  **Detection**: Renovate scans your Live Repo, sees `vpc-v1.0.0`, and detects the new tag.
+3.  **Proposal**: Renovate opens a Pull Request: `chore(deps): update module vpc to vpc-v1.1.0`.
 4.  **Validation**: CI triggers `terragrunt plan` on that PR.
 5.  **Merge**: You review the plan and merge.
 
 {{< mermaid >}}
 graph TD
-    Tag[New Tag v1.1.0 Released] -->|Scanned by| Reno[Renovate Bot]
+    Tag[New Tag vpc-v1.1.0 Released] -->|Scanned by| Reno[Renovate Bot]
     
     subgraph Live_Repo [Live Infrastructure Repo]
-        Reno -->|Opens PR| PR[PR: Update to v1.1.0]
+        Reno -->|Opens PR| PR[PR: Update to vpc-v1.1.0]
     end
     
     subgraph CI_Pipeline [GitHub Actions]
