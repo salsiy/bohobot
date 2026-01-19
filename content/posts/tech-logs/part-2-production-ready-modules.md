@@ -9,6 +9,8 @@ draft: false
 
 This is Part 2 of my series on [Production-Grade Terraform Patterns](/series/production-grade-terraform-patterns/). In [Part 1](/posts/tech-logs/part-1-split-repository-pattern/), I established the architecture for scaling infrastructure. Now, I focus on the building blocks: the **Modules**.
 
+> **Prerequisite**: This guide builds upon the **Split Repository Pattern** defined in [Part 1](/posts/tech-logs/part-1-split-repository-pattern/). I highly recommend reading it first to understand the architectural context.
+
 In many tutorials, a Terraform module is treated as a simple folder of `.tf` scripts. However, in a professional engineering environment, a module must be treated as a **Software Product**. It requires a well-defined API (Variables), strict guarantees (Validation), and a stable lifecycle (Versioning).
 
 If you write "lazy" modules, your infrastructure will be fragile. Building **Production-Ready Modules** creates an infrastructure that is stable, reusable, and safe.
@@ -64,7 +66,7 @@ Every module must contain these three files at a minimum:
 
 After years of writing modules, my biggest recommendation is: **Do not write modules from scratch.**
 
-Unless you have very specific requirements, use the open-source community modules (like `terraform-aws-modules`) and **wrap** them. This gives you the stability of a battle-tested module while keeping your specific defaults (Standardization).
+Unless you have very specific requirements, use the open-source community modules (like [terraform-aws-modules](https://github.com/terraform-aws-modules)) and **wrap** them. This gives you the stability of a battle-tested module while keeping your specific defaults (Standardization).
 
 For example, instead of defining `resource "aws_s3_bucket" "main" {...}` with 50 lines of configuration, wrap the community module:
 
