@@ -1,6 +1,6 @@
 ---
 title: "Part 2: Writing Production-Ready Terraform Modules"
-date: 2025-12-20
+date: 2025-12-24
 series_order: 2
 series: ["Production-Grade Terraform Patterns"]
 tags: ["terraform", "modules", "best-practices", "infrastructure-as-code"]
