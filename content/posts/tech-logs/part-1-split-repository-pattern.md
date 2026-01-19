@@ -136,7 +136,7 @@ Without Terragrunt, every component in your live repo needs a hardcoded `backend
 
 ## The Directory Hierarchy
 
-In your Live repository, the folder structure is your source of truth. I follow the `Account` -> `Region` -> `Environment` hierarchy to physically isolate failure domains.
+In your Live repository, the folder structure is your source of truth. I follow the `Account` -> `Region` -> `Environment` hierarchy to physically isolate failure domains. This approaches uses a **Multi-Account Strategy**, ensuring strict isolation between Development, Staging, and Production. This aligns with the [AWS Best Practices for Organizing Your AWS Environment](https://docs.aws.amazon.com/whitepapers/latest/organizing-your-aws-environment/organizing-your-aws-environment.html), designed to minimize blast radius and simplify access management.
 
 
 ```text
