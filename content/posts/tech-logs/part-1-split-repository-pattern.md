@@ -17,8 +17,8 @@ graph TD
     ModRepo(terraform-patterns-modules)
 
     %% MODULE VERSIONS
-    ModV1("v1.0.0<br/>(Stable)")
-    ModV2("v1.1.0<br/>(Beta)")
+    ModV1("ecs-cluster-v0.1.0<br/>(Stable)")
+    ModV2("ecs-cluster-v0.2.0<br/>(Beta)")
     
     ModRepo --- ModV1
     ModRepo --- ModV2
@@ -151,17 +151,16 @@ terraform-patterns-modules/     # 1. The Logic
 terraform-patterns-live/        # 2. The State
 ├── root.hcl                # 1. Global Configuration (State Bucket, Locking)
 ├── tags.yaml               # 2. Global Tags
+├── _envcommon/             # 3. DRY Module Configs (Global)
+│   ├── vpc.hcl
+│   └── ecs-cluster.hcl
 ├── production-account/     # 4. Account Isolation
-│   ├── _envcommon/         # 3. DRY Module Configs (Account Scoped)
-│   │   ├── vpc.hcl
-│   │   └── ecs-cluster.hcl
 │   └── us-east-1/          # 5. Region Isolation
 │       ├── vpc/            # 6. Component
 │       │   └── terragrunt.hcl
 │       └── ecs-cluster/
 │           └── terragrunt.hcl
 ├── development-account/
-│   ├── _envcommon/
 │   └── us-east-1/
 │       └── ...
 └── staging-account/
@@ -229,8 +228,7 @@ inputs = merge(
 This is where the magic happens. We define the module `source` and common variables once. All environments (Dev, Stage, Prod) inherit from here.
 
 ```hcl
-terraform {
-  source = "git::https://github.com/my-org/terraform-patterns-modules.git//ecs-cluster?ref=v1.0.0"
+  source = "git::https://github.com/my-org/terraform-patterns-modules.git//ecs-cluster?ref=ecs-cluster-v0.1.0"
 }
 
 inputs = {
@@ -252,7 +250,7 @@ include "root" {
 }
 
 include "envcommon" {
-  path = "${dirname(find_in_parent_folders("account.hcl"))}/_envcommon/ecs-cluster.hcl"
+  path = "${dirname(find_in_parent_folders("root.hcl"))}/_envcommon/ecs-cluster.hcl"
 }
 
 inputs = {
