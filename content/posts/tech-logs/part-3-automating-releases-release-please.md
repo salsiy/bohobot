@@ -42,9 +42,11 @@ I adopt **[Conventional Commits](https://www.conventionalcommits.org/)**:
 
 The `!` indicates a breaking change (Major), regardless of the prefix.
 
-## Configuring Release Please in a Monorepo
+## Configuring Release Please
 
-I often keep multiple modules in one repository (a Monorepo). A change to the VPC module should not trigger a release for the RDS module.
+I often keep multiple modules in one repository. A change to the VPC module should not trigger a release for the RDS module.
+
+For reference, see my [terraform-patterns-modules](https://github.com/salsiy/terraform-patterns-modules) repository.
 
 Release Please uses a **Manifest-Driven** approach to handle this.
 
@@ -105,33 +107,6 @@ jobs:
           manifest-file: .release-please-manifest.json
           token: ${{ secrets.GITHUB_TOKEN }}
 ```
-
-## Internal Version Files
-
-Standard Terraform doesn't have a `package.json` with a version field. To let our Terraform code know its own version (e.g., for tagging resources), I use a generic internal file.
-
-In `modules/vpc/versions.tf`:
-
-```hcl
-locals {
-  # x-release-please-version
-  version = "1.0.0"
-}
-```
-
-I update `release-please-config.json` to target this file:
-
-```json
-"extra-files": [
-  {
-    "type": "generic",
-    "path": "modules/vpc/versions.tf",
-    "jsonpath": "locals.version"
-  }
-]
-```
-
-Now, Release Please will automatically bump this local variable whenever it cuts a release.
 
 {{< mermaid >}}
 sequenceDiagram
