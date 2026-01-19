@@ -4,10 +4,12 @@ date: 2025-12-20
 series_order: 3
 series: ["Production-Grade Terraform Patterns"]
 tags: ["terraform", "release-please", "github-actions", "cicd", "automation"]
-draft: true
+draft: false
 ---
 
 This is Part 3 of my series on [Production-Grade Terraform Patterns](/series/production-grade-terraform-patterns/). In [Part 2](/posts/tech-logs/part-2-production-ready-modules/), I established standards for module creation. Now, I solve the biggest friction point in module management: **Release Engineering**.
+
+> **Prerequisite**: This guide assumes you have defined your modules using the **Production-Ready Standards** from [Part 2](/posts/tech-logs/part-2-production-ready-modules/).
 
 Treating infrastructure as software means you must version it. But if an engineer updates a module, they shouldn't have to manually calculate semantic versions ("Is this a minor or patch?"), write changelogs, or tag releases.
 
@@ -17,11 +19,20 @@ In high-velocity teams, manual release steps lead to:
 
 The solution is to automate this entire lifecycle using **Release Please**.
 
+## Why Release Please?
+
+There are many tools for this (like [semantic-release](https://github.com/semantic-release/semantic-release)), and any of them can work depending on your preference.
+
+The critical point is that **manually managing and calculating tags is difficult**. I choose **[Release Please](https://github.com/googleapis/release-please-action)** because:
+
+1.  **Google-Backed**: It is maintained by Google.
+2.  **Easy Integration**: It integrates seamlessly with GitHub Actions, automating the complex task of versioning without requiring heavy custom scripting.
+
 ## The Strategy: Conventional Commits
 
 Automation requires structured data. You cannot automate versioning if commit messages are "fixed stuff" or "updated vpc".
 
-I adopt **Conventional Commits**:
+I adopt **[Conventional Commits](https://www.conventionalcommits.org/)**:
 
 | Prefix | SemVer Impact | Example | Result |
 | :--- | :--- | :--- | :--- |
