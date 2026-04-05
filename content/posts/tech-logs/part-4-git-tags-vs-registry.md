@@ -21,21 +21,30 @@ That protocol is what makes registry-based installs different from “just git�
 This is not only a syntax choice; it is a trade-off between simplicity and what the registry gives you (metadata, constraints, UI).
 
 {{< mermaid >}}
-flowchart LR
-    subgraph Option1 ["Option 1: Git"]
-        direction TB
-        Live1["Live Repo"] -->|"git::...?ref=tag"| Git["GitHub/GitLab"]
-        Git -->|"checkout + subdir"| Live1
+%% Option 1 appears first (top); Option 2 below — matches article order
+flowchart TB
+    subgraph Opt1 ["① Option 1 — Git reference"]
+        direction LR
+        L1["Live repo\n(Terragrunt / Terraform)"]
+        VCS["Git host\n(modules monorepo)"]
+        L1 -->|"git:: source + ?ref=tag (path after double-slash)"| VCS
+        VCS -->|"checkout tagged tree, module subfolder"| L1
     end
 
-    subgraph Option2 ["Option 2: Registry"]
-        direction TB
-        Live2["Live Repo"] -->|"tfr://... or module source"| Reg["Registry"]
-        Reg -->|"tarball (e.g. .tar.gz)"| Live2
+    subgraph Opt2 ["② Option 2 — Module registry"]
+        direction LR
+        L2["Live repo\n(Terragrunt / Terraform)"]
+        REG["Registry\n(TFC / Artifactory / …)"]
+        L2 -->|"address + version\n(tfr://… or module block)"| REG
+        REG -->|"resolve semver → download .tar.gz"| L2
     end
 
-    style Option1 fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
-    style Option2 fill:#ffebee,stroke:#c62828,stroke-width:2px
+    style Opt1 fill:#e8f4fc,stroke:#1565c0,stroke-width:2px
+    style Opt2 fill:#fce8e6,stroke:#b71c1c,stroke-width:2px
+    style L1 fill:#fff,stroke:#1565c0
+    style VCS fill:#fff,stroke:#1565c0
+    style L2 fill:#fff,stroke:#b71c1c
+    style REG fill:#fff,stroke:#b71c1c
 {{< /mermaid >}}
 
 ## Option 1: Git reference
