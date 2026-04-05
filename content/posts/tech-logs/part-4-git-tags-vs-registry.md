@@ -21,31 +21,39 @@ That protocol is what makes registry installs different from plain Git: you get 
 This is not only a syntax choice. It is a trade-off between keeping things simple and paying the cost of running a registry (metadata, semver constraints, a UI).
 
 {{< ltr >}}
+<div class="not-prose w-full flex justify-center my-8">
 {{< mermaid >}}
-%%{init: {"themeVariables": {"fontSize": "24px", "fontFamily": "system-ui, Segoe UI, sans-serif", "primaryTextColor": "#111", "primaryBorderColor": "#444"}, "flowchart": {"nodeSpacing": 88, "rankSpacing": 96, "padding": 40, "curve": "basis", "htmlLabels": true}}}%%
-%% Option 1 left, Option 2 right (LR; ltr shortcode avoids RTL mirror)
-flowchart LR
-    subgraph Opt1 ["① Option 1: Git reference"]
+%%{init: {"themeVariables": {"fontSize": "22px", "fontFamily": "system-ui, Segoe UI, sans-serif", "primaryTextColor": "#111"}, "flowchart": {"nodeSpacing": 28, "rankSpacing": 56, "padding": 36, "curve": "basis", "htmlLabels": true}}}%%
+flowchart TB
+    subgraph Opt1 [Option 2: Git reference]
         direction TB
-        L1["Live repo<br/>Terragrunt / Terraform"]
-        VCS["Git host<br/>modules monorepo"]
-        L1 <-->|"git:: + ?ref + subfolder"| VCS
+        gA["Live repo<br/>Terragrunt / Terraform"]
+        gB["Git host<br/>modules monorepo"]
+        gC["Module source<br/>tag + subfolder"]
+        gA --> gB
+        gB --> gC
     end
 
-    subgraph Opt2 ["② Option 2: Module registry"]
+    subgraph Opt2 [Option 1: Module registry]
         direction TB
-        L2["Live repo<br/>Terragrunt / Terraform"]
-        REG["Registry<br/>TFC · Artifactory · …"]
-        L2 <-->|"tfr or module block + version → tarball"| REG
+        rA["Live repo<br/>Terragrunt / Terraform"]
+        rB["Registry<br/>Terraform registry,gitlab,jfrog, …"]
+        rC["Module package<br/>versioned .tar.gz"]
+        rA --> rB
+        rB --> rC
     end
 
-    style Opt1 fill:#e8f4fc,stroke:#1565c0,stroke-width:3px
-    style Opt2 fill:#fce8e6,stroke:#b71c1c,stroke-width:3px
-    style L1 fill:#fff,stroke:#1565c0,stroke-width:2px
-    style VCS fill:#fff,stroke:#1565c0,stroke-width:2px
-    style L2 fill:#fff,stroke:#b71c1c,stroke-width:2px
-    style REG fill:#fff,stroke:#b71c1c,stroke-width:2px
+    classDef mid fill:#fafafa,stroke:#78909c,stroke-width:2px
+    classDef gitLast fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+    classDef regLast fill:#ffebee,stroke:#c62828,stroke-width:2px
+
+    class gA,gB,rA,rB mid
+    class gC gitLast
+    class rC regLast
+    class Opt1 fill:#f5f9ff,stroke:#1565c0,stroke-width:3px
+    class Opt2 fill:#fff8f7,stroke:#c62828,stroke-width:3px
 {{< /mermaid >}}
+</div>
 {{< /ltr >}}
 
 ## Option 1: Git reference
