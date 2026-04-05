@@ -4,7 +4,7 @@ date: 2026-01-01
 series_order: 4
 series: ["Production-Grade Terraform Patterns"]
 tags: ["terraform", "terragrunt", "security", "git", "infrastructure-as-code"]
-draft: true
+draft: false
 ---
 
 This is Part 4 of my series on [Production-Grade Terraform Patterns](/series/production-grade-terraform-patterns/). In [Part 3](/posts/tech-logs/part-3-automating-releases-release-please/), I automated the release of my modules.
@@ -12,59 +12,54 @@ This is Part 4 of my series on [Production-Grade Terraform Patterns](/series/pro
 Now, I have a Modules Repository with a tag `vpc-v1.1.0`. I have a Live Repository where I want to build that infrastructure. How do I connect them?
 
 There are two primary ways to consume modules:
-1.  **Git References**: Pointing directly to a tag in your Version Control System.
-2.  **Registry Protocol**: Using a dedicated artifact server (TFC, Artifactory).
 
-This is not just a syntax choice; it's a trade-off between simplicity and capability.
+1. **Git references** — point Terraform at a URL (often with `?ref=` to a tag or commit).
+2. **Module registry** — use Terraform’s [module registry protocol](https://developer.hashicorp.com/terraform/internals/module-registry-protocol): the CLI discovers versions and downloads a tarball from a registry (Terraform Cloud/Enterprise, Artifactory, GitLab Terraform Registry, or a custom implementation of that protocol).
+
+That protocol is what makes registry-based installs different from “just git”: list versions, match constraints, then download one version. The link above is the authoritative reference if you want the HTTP shape and behavior.
+
+This is not only a syntax choice; it is a trade-off between simplicity and what the registry gives you (metadata, constraints, UI).
 
 {{< mermaid >}}
 flowchart LR
-    subgraph Option1 ["Option 1: Git Tags"]
+    subgraph Option1 ["Option 1: Git"]
         direction TB
-        Live1["Live Repo"] -->|"git clone ...?ref=vpc-v1.1.0"| Git["GitHub/GitLab"]
-        Git -->|"Source Code"| Live1
+        Live1["Live Repo"] -->|"git::...?ref=tag"| Git["GitHub/GitLab"]
+        Git -->|"checkout + subdir"| Live1
     end
 
-    subgraph Option2 ["Option 2: Private Registry"]
+    subgraph Option2 ["Option 2: Registry"]
         direction TB
-        Live2["Live Repo"] -->|"request 1.0.x"| Reg["Terraform Cloud / Artifactory"]
-        Reg -->|"Download .tar.gz"| Live2
+        Live2["Live Repo"] -->|"tfr://... or module source"| Reg["Registry"]
+        Reg -->|"tarball (e.g. .tar.gz)"| Live2
     end
-    
+
     style Option1 fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
     style Option2 fill:#ffebee,stroke:#c62828,stroke-width:2px
 {{< /mermaid >}}
 
-## Option 1: The Git Reference (Pragmatic Choice)
+## Option 1: Git reference
 
-This is the standard for most private, internal infrastructure. You bypass intermediate servers and tell Terraform to pull code directly from GitHub or GitLab.
+This is the usual choice for private, internal modules: Terraform pulls source straight from GitHub or GitLab—no registry in the middle.
 
-### The Syntax
-
-In your `terragrunt.hcl`:
+### Syntax (Terragrunt)
 
 ```hcl
 terraform {
-  # The double slash // tells Terraform to clone the repo content
-  # and then enter the subfolder modules/vpc
+  # After the repo URL, // is the module root inside the clone (here, modules/vpc).
   source = "git::https://github.com/my-org/infra-modules.git//modules/vpc?ref=vpc-v1.1.0"
 }
 ```
 
-### The Pros
-*   **Zero Infrastructure**: No need for Artifactory or Terraform Cloud.
-*   **Immutable Pinning**: You can pin to a tag or a Commit SHA. The code cannot change under your feet.
-*   **Monorepo Friendly**: The `//` syntax natively supports our monorepo structure.
+**Pros:** No registry to run; pin with a tag or commit SHA; `//` fits a monorepo layout.
 
-### The Cons
-*   **No Fuzzy Versioning**: You cannot say `~> 1.0`. You must specify the exact tag. This means upgrades must be explicit.
-*   **Fetch Speed**: Cloning large Git repositories can be slower than downloading a zipped artifact.
+**Cons:** No Terraform-style version constraint on the URL—you pick the ref yourself, so bumps are explicit. Large repos can mean heavier fetches than a single module tarball.
 
-## Option 2: The Private Registry (Enterprise Choice)
+## Option 2: Private registry
 
-If you use TFC/TFE or GitLab Package Registry, you can publish modules as formal artifacts.
+If you publish modules to a registry, consumers use a registry address instead of `git::`.
 
-### The Syntax
+### Syntax (Terragrunt `tfr://`)
 
 ```hcl
 terraform {
@@ -72,47 +67,35 @@ terraform {
 }
 ```
 
-### The Pros
-*   **Fuzzy Versioning**: You can use `version = "~> 1.0"`. `terragrunt init` will pick up the latest patch automatically.
-*   **Performance**: Downloads are faster (`.tar.gz` vs `git clone`).
-*   **Discovery**: Registries usually provide a UI to browse module documentation.
+In plain Terraform (a `module` block in `.tf`), the same logical module is often written with a separate `version` argument. Terraform resolves [version constraints](https://developer.hashicorp.com/terraform/language/block/module#version) (for example `~> 1.0`) against the versions the registry exposes—exactly the flow described in the [module registry protocol](https://developer.hashicorp.com/terraform/internals/module-registry-protocol).
 
-### The Cons
-*   **Opacity**: "What version is in prod?" With `~> 1.0`, you have to check state files to know if it's 1.0.1 or 1.0.2.
-*   **Complexity**: Requires a build pipeline to package and upload artifacts.
+**Pros:** Constraint-aware resolution when you use Terraform’s `module` + `version` pattern; tarball download; many registries expose docs and browsing in a UI.
 
-## The Verdict: Stick with Git
+**Cons:** Operating and publishing to a registry is extra machinery. If you use loose constraints, different applies can resolve to different patch versions unless you also treat upgrades as a deliberate change (same discipline problem as “floating” refs anywhere).
 
-For 95% of engineering teams, **Git References are superior**.
+With **Terragrunt**, the practical pattern for `tfr://` is usually an **exact** `?version=` in the URL unless your Terragrunt version and docs say otherwise—do not assume `terragrunt init` applies `~> 1.0` the same way a Terraform `module` block does.
 
-Why? Because in Production, "Fuzzy Versioning" is an **anti-pattern**.
+## Verdict for this series
 
-If you use `~> 1.0`, and you deploy on Tuesday, you might get `v1.0.1`. If you deploy Wednesday, and someone released `v1.0.2` overnight, you get new code. **Implicit upgrades are dangerous.**
+For most internal teams—and for this series—**Git references with an explicit tag or SHA** stay simple, avoid registry operations, and keep “what we deployed” obvious in the live repo.
 
-You want explicit actions: "I am upgrading VPC from v1.0.1 to v1.0.2". Git tags force this discipline.
+Using `~> 1.0`-style **implicit** upgrades in production is risky: Tuesday’s apply and Wednesday’s apply can pick different patch releases. Prefer explicit bumps whether you use git or a registry.
 
-## Handling Authentication
+## Git authentication (CI/CD)
 
-The biggest friction point with Git modules is Authentication. Your Live repo needs to clone your Modules repo.
-
-**Do not embed credentials** in your source URL (`https://user:token@github.com...`).
-
-Instead, use `git config` injection in your CI/CD pipeline:
+Do not put tokens in module URLs. Configure Git once in the pipeline so plain `https://github.com/...` sources still work—for example:
 
 ```yaml
-- name: Configure Git Credentials
+- name: Configure Git credentials
   run: |
     git config --global url."https://oauth2:${{ secrets.GITHUB_TOKEN }}@github.com".insteadOf https://github.com
 ```
 
-This tells git: "Whenever you see `https://github.com`, silently inject these credentials." Your Terraform code stays clean, but the pipeline has access.
+`GITHUB_TOKEN` only reaches other private repos when your org and repo permissions allow it; otherwise use a PAT or a GitHub App with repository access.
 
 ## Summary
 
-I have established my consumption model:
-1.  **Release Please** tags `vpc-v1.1.0`.
-2.  **Terragrunt** references that tag via secure Git URL.
+1. **Release Please** tags `vpc-v1.1.0`.
+2. **Terragrunt** points at that tag via a `git::` source (no credentials in HCL).
 
-But who updates that tag? If I have 50 environments using `v1.0.0`, do I manually edit 50 files?
-
-In **Part 5**, I will deploy **Renovate Bot** to close the loop, automatically detecting releases and updating your live infrastructure.
+Next: who updates those pins across many environments? In **Part 5**, **Renovate** closes that loop.
