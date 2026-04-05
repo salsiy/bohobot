@@ -4,7 +4,7 @@ date: 2026-01-05
 series_order: 5
 series: ["Production-Grade Terraform Patterns"]
 tags: ["terraform", "terragrunt", "renovate", "automation", "devops"]
-draft: true
+draft: false
 ---
 
 This is Part 5 of my series on [Production-Grade Terraform Patterns](/series/production-grade-terraform-patterns/). I have split my repositories, enforced versioning, automated releases, and set up my consumption model.
@@ -46,32 +46,64 @@ graph TD
     style AWS fill:#232f3e,stroke:#ff9900,color:white
 {{< /mermaid >}}
 
+A real Renovate pull request looks like this in GitHub:
+
+![Renovate PR proposing a module version bump](/images/post/part-5-renovate-pr.png)
+
 ## Configuring Renovate for Terragrunt
 
-Renovate is ideal because it has a dedicated **Terragrunt Manager**. It parses HCL and finds underlying versions.
+Renovate is ideal because it has a dedicated **Terragrunt manager**. It parses HCL and finds underlying versions.
 
-Create `renovate.json` in your Live Repo:
+Here is the **`renovate.json`** from my live repo, [terraform-patterns-live](https://github.com/salsiy/terraform-patterns-live) ([source on GitHub](https://github.com/salsiy/terraform-patterns-live/blob/main/renovate.json)):
 
 ```json
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base",
+    "config:recommended",
     ":dependencyDashboard"
   ],
-  "enabledManagers": ["terragrunt", "terraform"],
+  "enabledManagers": [
+    "terragrunt",
+    "terraform"
+  ],
   "terragrunt": {
-    "fileMatch": ["\\.hcl$"]
+    "managerFilePatterns": [
+      "/\\.hcl$/"
+    ],
+    "versioning": "regex:^((?<compatibility>.*)-v|v*)(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$"
   },
   "packageRules": [
     {
-      "matchDatasources": ["terraform-module"],
+      "matchDatasources": [
+        "git-tags",
+        "github-tags",
+        "terraform-module"
+      ],
       "groupName": "infrastructure modules",
-      "labels": ["renovate/modules"]
+      "matchPackageNames": [
+        "/terraform-patterns-modules/"
+      ]
+    },
+    {
+      "matchFileNames": [
+        "**/development-account/**"
+      ],
+      "automerge": true
+    },
+    {
+      "matchFileNames": [
+        "**/production-account/**"
+      ],
+      "minimumReleaseAge": "7 days"
     }
   ]
 }
 ```
+
+* **`config:recommended`** plus **`:dependencyDashboard`** gives sensible defaults and a single GitHub Issue that lists pending updates.
+* **`terragrunt.managerFilePatterns`** limits scanning to `.hcl` files; the **`versioning`** regex matches tags like `vpc-v1.2.0` from this series (compatibility prefix + semver).
+* **`packageRules`**: module updates under `terraform-patterns-modules` are **grouped** as “infrastructure modules”; paths under **`development-account`** may **automerge** when CI passes; **`production-account`** changes wait **7 days** after release before Renovate proposes them (`minimumReleaseAge`).
 
 ### The Dependency Dashboard
 
@@ -103,31 +135,14 @@ jobs:
       # Step to post plan.txt as a PR comment (using github-script)
 ```
 
-## Deployment Strategy: Dev vs Prod
+## Deployment strategy: dev vs prod
 
-You never want to upgrade Production at the same time as Dev. Renovate allows us to enforce "Soak Time".
+You rarely want production to move at the same pace as development. In the config above, **`matchFileNames`** ties behavior to your repo layout: anything under **`development-account`** can **automerge** after CI; anything under **`production-account`** must pass a **7-day** `minimumReleaseAge` before Renovate opens a PR, which gives a soak period on new module releases.
 
-Update `renovate.json` to be environment-aware:
+Adjust the path globs to match your own account or folder names. The idea is the same: **fast feedback in lower environments**, **slower, explicit promotion** toward production.
 
-```json
-"packageRules": [
-  {
-    "matchPaths": ["**/dev/**"],
-    "automerge": true
-  },
-  {
-    "matchPaths": ["**/prod/**"],
-    "minimumReleaseAge": "7 days"
-  }
-]
-```
+## Moving to execution
 
-**Result**:
-*   **Dev**: Updates arrive immediately. If CI passes, they can auto-merge.
-*   **Prod**: Renovate waits 7 days after the release is published before even proposing the PR.
+You now have a pipeline that proposes updates automatically. But who *approves* and *applies* them?
 
-## Moving to Execution
- 
- You now have a pipeline that proposes updates automatically. But who *approves* and *applies* them?
- 
- If you merge a PR, does a human run `terraform apply`? In **Part 6**, I will introduce **TACOS (Atlantis, Digger)** to automate the final mile of execution safely.
+If you merge a PR, does a human run `terraform apply`? In **Part 6**, I will introduce **TACOS (Atlantis, Digger)** to automate the final mile of execution safely.
