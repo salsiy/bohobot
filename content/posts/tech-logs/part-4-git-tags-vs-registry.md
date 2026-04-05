@@ -25,7 +25,7 @@ This is not only a syntax choice. It is a trade-off between keeping things simpl
 {{< mermaid >}}
 %%{init: {"themeVariables": {"fontSize": "22px", "fontFamily": "system-ui, Segoe UI, sans-serif", "primaryTextColor": "#111"}, "flowchart": {"nodeSpacing": 28, "rankSpacing": 56, "padding": 36, "curve": "basis", "htmlLabels": true}}}%%
 flowchart TB
-    subgraph Opt1 [Option 2: Git reference]
+    subgraph Opt2 [Option 2: Git reference]
         direction TB
         gA["Live repo<br/>Terragrunt / Terraform"]
         gB["Git host<br/>modules monorepo"]
@@ -34,7 +34,7 @@ flowchart TB
         gB --> gC
     end
 
-    subgraph Opt2 [Option 1: Module registry]
+    subgraph Opt1 [Option 1: Module registry]
         direction TB
         rA["Live repo<br/>Terragrunt / Terraform"]
         rB["Registry<br/>Terraform registry,gitlab,jfrog, …"]
