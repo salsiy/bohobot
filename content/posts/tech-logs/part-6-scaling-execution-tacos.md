@@ -1,13 +1,13 @@
 ---
-title: "Part 6: Scaling Execution — The Case for TACOS (Atlantis, Digger)"
+title: "Part 6: Scaling Execution — The Case for TACOS"
 date: 2025-12-20
 series_order: 6
 series: ["Production-Grade Terraform Patterns"]
-tags: ["terraform", "atlantis", "digger", "cicd", "automation", "devops"]
-draft: true
+tags: ["terraform", "tacos", "gitops", "cicd", "automation", "devops"]
+draft: false
 ---
 
-This is Part 6 of my series on [Production-Grade Terraform Patterns](/series/production-grade-terraform-patterns/). In [Part 5](/posts/tech-logs/part-5-automating-dependency-updates-renovate/), I closed the loop on updates. But one question remains: **When you merge a PR, who actually runs `terraform apply`?**
+This is Part 6 — the final installment — of my series on [Production-Grade Terraform Patterns](/series/production-grade-terraform-patterns/). In [Part 5](/posts/tech-logs/part-5-automating-dependency-updates-renovate/), I closed the loop on updates. But one question remains: **When you merge a PR, who actually runs `terraform apply`?**
 
 In valid "GitOps", humans should never touch the cloud console. And ideally, they shouldn't even run `terraform apply` from their laptops.
 
@@ -23,8 +23,10 @@ You put `terraform apply` in a pipeline that runs on merge to `main`.
 *   **Benefit**: Centralized, audited execution.
 *   **Friction**: You only see the failure *after* you merge. "Fixing broken main" becomes a daily ritual.
 
+This is where many teams land first — and it works — until PR-time plan review and locking start to matter.
+
 ### Stage 3: TACOS (Terraform Automation and Collaboration Software)
-This is the modern standard. Tools like **Atlantis**, **Digger**, and **Spacelift** move the execution **into the Pull Request**.
+This is the modern standard. TACOS tools move plan and apply **into the Pull Request**, so you review infrastructure changes before they touch the cloud.
 
 ## The Workflow
 
@@ -32,7 +34,7 @@ This is the modern standard. Tools like **Atlantis**, **Digger**, and **Spacelif
 sequenceDiagram
     participant Dev as Developer
     participant Git as GitHub PR
-    participant TACOS as Atlantis/Digger
+    participant TACOS as TACOS
     participant Cloud as AWS
 
     Dev->>Git: Open Pull Request
@@ -40,24 +42,37 @@ sequenceDiagram
     TACOS->>TACOS: Plan
     TACOS->>Git: Comment: "Plan: 3 to add"
     
-    Dev->>Git: Comment: "atlantis apply"
+    Dev->>Git: Comment: "apply"
     Git->>TACOS: Webhook Event
     TACOS->>Cloud: Apply Changes
     TACOS->>Git: Comment: "Apply Successful"
     TACOS->>Git: Merge PR (Optional)
 {{< /mermaid >}}
 
-## The Tools: Atlantis vs. Digger
+## TACOS in the wild
 
-### 1. Atlantis (The Classic)
-Atlantis is a Go binary you host yourself (usually on ECS or K8s). It listens to webhooks.
-*   **Pros**: Open source standard. Handles locking perfectly (nobody else can apply if you have a lock).
-*   **Cons**: It's a "Stateful Pet". You have to maintain a server that faces the public internet (to receive webhooks).
+The category includes many products. Here are the ones worth knowing — names and official links only:
 
-### 2. Digger (The Modern Native)
-Digger is "Atlantis for GitHub Actions". It uses your *existing* CI runners.
-*   **Pros**: Serverless. No new infrastructure to maintain. Reuses your existing OIDC cloud authentication.
-*   **Cons**: Newer ecosystem than Atlantis.
+**PR-native / self-hosted**
+
+*   [Atlantis](https://www.runatlantis.io/) — open-source PR automation server
+*   [OpenTaco](https://opentaco.dev/) — successor to [Digger](https://digger.dev/) (Atlantis-style automation on your existing CI runners)
+*   [Burrito](https://docs.burrito.tf/latest/) — Kubernetes operator for Terraform PR/MR workflows and drift detection
+
+**Orchestration / platform**
+
+*   [Terramate](https://terramate.io/) — stacks, orchestration, CI/CD integration, and observability
+
+**Managed platforms**
+
+*   [HCP Terraform](https://developer.hashicorp.com/terraform/tutorials/cloud-get-started) (formerly Terraform Cloud) / Terraform Enterprise — HashiCorp's managed offering
+*   [Spacelift](https://spacelift.io/) — multi-IaC orchestration platform
+*   [Env0](https://www.env0.com/) — cloud governance and IaC automation
+*   [Scalr](https://scalr.com/) — Terraform Cloud alternative with PR-native GitOps
+
+[Digger](https://digger.dev/) rebranded to [OpenTaco](https://opentaco.dev/) — same category, new name. If you evaluated Digger in the past, start with OpenTaco.
+
+Pick based on team size, existing CI, and whether you want self-hosted or SaaS. I have not deployed any of these in my reference repos — treat this as a starting point, not a recommendation.
 
 ## Why You Need This
 If you have more than 3 engineers, locking is essential. TACOS provide:
@@ -67,11 +82,13 @@ If you have more than 3 engineers, locking is essential. TACOS provide:
 
 ## Conclusion
 
-A Complete Platform looks like this:
-1.  **Split Repos** (Part 1) isolate failure domains.
-2.  **Modules** (Part 2) provide reusable logic.
-3.  **Release Please** (Part 3) versions those modules reliably.
-4.  **Renovate** (Part 5) keeps dependencies fresh.
-5.  **TACOS** (Part 6) ensure safe, audited deployment.
+That closes the series. A complete platform looks like this:
+
+1.  **Split Repos** ([Part 1](/posts/tech-logs/part-1-split-repository-pattern/)) isolate failure domains.
+2.  **Modules** ([Part 2](/posts/tech-logs/part-2-production-ready-modules/)) provide reusable logic.
+3.  **Release Please** ([Part 3](/posts/tech-logs/part-3-automating-releases-release-please/)) versions those modules reliably.
+4.  **Git Tags** ([Part 4](/posts/tech-logs/part-4-git-tags-vs-registry/)) wire the live repo to versioned modules.
+5.  **Renovate** ([Part 5](/posts/tech-logs/part-5-automating-dependency-updates-renovate/)) keeps dependencies fresh.
+6.  **TACOS** (Part 6) automate the final mile — plan and apply in the PR, with locking and review.
 
 You have now graduated from "running scripts" to building a **Product**.

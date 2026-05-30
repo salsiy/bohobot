@@ -48,7 +48,7 @@ graph TD
 
 A real Renovate pull request looks like this in GitHub:
 
-![Renovate PR proposing a module version bump](/images/post/part-5-renovate-pr.png)
+![Renovate PR proposing a module version bump](/images/posts/part-5-renovate-pr.png)
 
 ## Configuring Renovate for Terragrunt
 
@@ -145,4 +145,4 @@ Adjust the path globs to match your own account or folder names. The idea is the
 
 You now have a pipeline that proposes updates automatically. But who *approves* and *applies* them?
 
-If you merge a PR, does a human run `terraform apply`? In **Part 6**, I will introduce **TACOS (Atlantis, Digger)** to automate the final mile of execution safely.
+If you merge a PR, does a human run `terraform apply`? In **Part 6**, I will introduce **TACOS** — Terraform Automation and Collaboration Software — and the tools that automate the final mile of execution safely.

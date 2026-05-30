@@ -17,4 +17,4 @@ In this 6-part guide, I walk through the journey of maturing your infrastructure
 *   **Part 3**: How to automate the entire release lifecycle (Changelogs, Tags) using Release Please.
 *   **Part 4**: Why you should favor secure Git Tags over Private Registries for internal code.
 *   **Part 5**: How to automate dependency upgrades across 100+ environments using Renovate.
-*   **Part 6**: How to scale execution securely using TACOS (Atlantis, Digger).
+*   **Part 6**: The series finale — scale execution with TACOS: plan and apply in the pull request, with locking and review.
