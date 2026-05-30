@@ -79,7 +79,7 @@ showTableOfContents: false
 </style>
 
 <div class="resume-header">
-  <p class="subtitle">DevOps Engineer | AWS & Terraform  Specialist</p>
+  <p class="subtitle">Senior DevOps Engineer | AWS & Terraform  Specialist</p>
   <p class="contact">Warsaw, Poland</p>
 </div>
 
