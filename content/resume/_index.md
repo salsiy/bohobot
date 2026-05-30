@@ -102,7 +102,7 @@ Cloud and DevOps professional experienced in automating infrastructure, optimizi
   <div class="experience-header">
     <img src="syncron.png" class="resume-logo" alt="Syncron">
   </div>
-  <p><strong>DevOps Engineer</strong> | Aug 2021 – Present | Remote (Warsaw, Poland)</p>
+  <p><strong>Senior DevOps Engineer</strong> | Aug 2021 – Present | Remote (Warsaw, Poland)</p>
   <ul>
     <li>Automated AWS infrastructure provisioning using Terraform, reducing deployment times by 60%</li>
   </ul>
