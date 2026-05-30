@@ -7,7 +7,7 @@ tags: ["terraform", "tacos", "gitops", "cicd", "automation", "devops"]
 draft: false
 ---
 
-This is Part 6 — the final installment — of my series on [Production-Grade Terraform Patterns](/series/production-grade-terraform-patterns/). In [Part 5](/posts/tech-logs/part-5-automating-dependency-updates-renovate/), I closed the loop on updates. But one question remains: **When you merge a PR, who actually runs `terraform apply`?**
+This is Part 6, the final installment of my series on [Production-Grade Terraform Patterns](/series/production-grade-terraform-patterns/). In [Part 5](/posts/tech-logs/part-5-automating-dependency-updates-renovate/), I closed the loop on updates. But one question remains: **When you merge a PR, who actually runs `terraform apply`?**
 
 In valid "GitOps", humans should never touch the cloud console. And ideally, they shouldn't even run `terraform apply` from their laptops.
 
@@ -23,7 +23,7 @@ You put `terraform apply` in a pipeline that runs on merge to `main`.
 *   **Benefit**: Centralized, audited execution.
 *   **Friction**: You only see the failure *after* you merge. "Fixing broken main" becomes a daily ritual.
 
-This is where many teams land first — and it works — until PR-time plan review and locking start to matter.
+This is where many teams land first. It works until PR-time plan review and locking start to matter.
 
 ### Stage 3: TACOS (Terraform Automation and Collaboration Software)
 This is the modern standard. TACOS tools move plan and apply **into the Pull Request**, so you review infrastructure changes before they touch the cloud.
@@ -51,28 +51,28 @@ sequenceDiagram
 
 ## TACOS in the wild
 
-The category includes many products. Here are the ones worth knowing — names and official links only:
+The category includes many products. Below are the ones worth knowing, with official links only.
 
-**PR-native / self-hosted**
+### PR-native and self-hosted
 
-*   [Atlantis](https://www.runatlantis.io/) — open-source PR automation server
-*   [OpenTaco](https://opentaco.dev/) — successor to [Digger](https://digger.dev/) (Atlantis-style automation on your existing CI runners)
-*   [Burrito](https://docs.burrito.tf/latest/) — Kubernetes operator for Terraform PR/MR workflows and drift detection
+*   **[Atlantis](https://www.runatlantis.io/)**: Open-source PR automation server.
+*   **[OpenTaco](https://opentaco.dev/)**: Successor to [Digger](https://digger.dev/). Atlantis-style automation on your existing CI runners.
+*   **[Burrito](https://docs.burrito.tf/latest/)**: Kubernetes operator for Terraform PR/MR workflows and drift detection.
 
-**Orchestration / platform**
+### Orchestration and platform
 
-*   [Terramate](https://terramate.io/) — stacks, orchestration, CI/CD integration, and observability
+*   **[Terramate](https://terramate.io/)**: Stacks, orchestration, CI/CD integration, and observability.
 
-**Managed platforms**
+### Managed platforms
 
-*   [HCP Terraform](https://developer.hashicorp.com/terraform/tutorials/cloud-get-started) (formerly Terraform Cloud) / Terraform Enterprise — HashiCorp's managed offering
-*   [Spacelift](https://spacelift.io/) — multi-IaC orchestration platform
-*   [Env0](https://www.env0.com/) — cloud governance and IaC automation
-*   [Scalr](https://scalr.com/) — Terraform Cloud alternative with PR-native GitOps
+*   **[HCP Terraform](https://developer.hashicorp.com/terraform/tutorials/cloud-get-started)** (formerly Terraform Cloud) / Terraform Enterprise: HashiCorp's managed offering.
+*   **[Spacelift](https://spacelift.io/)**: Multi-IaC orchestration platform.
+*   **[Env0](https://www.env0.com/)**: Cloud governance and IaC automation.
+*   **[Scalr](https://scalr.com/)**: Terraform Cloud alternative with PR-native GitOps.
 
-[Digger](https://digger.dev/) rebranded to [OpenTaco](https://opentaco.dev/) — same category, new name. If you evaluated Digger in the past, start with OpenTaco.
+[Digger](https://digger.dev/) rebranded to [OpenTaco](https://opentaco.dev/). Same category, new name. If you evaluated Digger in the past, start with OpenTaco.
 
-Pick based on team size, existing CI, and whether you want self-hosted or SaaS. I have not deployed any of these in my reference repos — treat this as a starting point, not a recommendation.
+Pick based on team size, existing CI, and whether you want self-hosted or SaaS. I have not deployed any of these in my reference repos. Treat this as a starting point, not a recommendation.
 
 ## Why You Need This
 If you have more than 3 engineers, locking is essential. TACOS provide:
@@ -89,6 +89,6 @@ That closes the series. A complete platform looks like this:
 3.  **Release Please** ([Part 3](/posts/tech-logs/part-3-automating-releases-release-please/)) versions those modules reliably.
 4.  **Git Tags** ([Part 4](/posts/tech-logs/part-4-git-tags-vs-registry/)) wire the live repo to versioned modules.
 5.  **Renovate** ([Part 5](/posts/tech-logs/part-5-automating-dependency-updates-renovate/)) keeps dependencies fresh.
-6.  **TACOS** ([Part 6](/posts/tech-logs/part-6-scaling-execution-tacos/)) automate the final mile — plan and apply in the PR, with locking and review.
+6.  **TACOS** ([Part 6](/posts/tech-logs/part-6-scaling-execution-tacos/)) automate the final mile: plan and apply in the PR, with locking and review.
 
 You have now graduated from "running scripts" to building a **Product**.
