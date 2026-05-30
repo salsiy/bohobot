@@ -1,6 +1,6 @@
 ---
 title: "Part 6: Scaling Execution — The Case for TACOS"
-date: 2025-02-15
+date: 2026-02-15
 series_order: 6
 series: ["Production-Grade Terraform Patterns"]
 tags: ["terraform", "tacos", "gitops", "cicd", "automation", "devops"]
