@@ -89,6 +89,6 @@ That closes the series. A complete platform looks like this:
 3.  **Release Please** ([Part 3](/posts/tech-logs/part-3-automating-releases-release-please/)) versions those modules reliably.
 4.  **Git Tags** ([Part 4](/posts/tech-logs/part-4-git-tags-vs-registry/)) wire the live repo to versioned modules.
 5.  **Renovate** ([Part 5](/posts/tech-logs/part-5-automating-dependency-updates-renovate/)) keeps dependencies fresh.
-6.  **TACOS** (Part 6) automate the final mile — plan and apply in the PR, with locking and review.
+6.  **TACOS** ([Part 6](/posts/tech-logs/part-6-scaling-execution-tacos/)) automate the final mile — plan and apply in the PR, with locking and review.
 
 You have now graduated from "running scripts" to building a **Product**.
