@@ -9,3 +9,7 @@ buildDrafts = false
   category = "categories"
   author = "authors"
   series = "series"
+
+# Required for Blowfish client-side search (generates /index.json)
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
