@@ -20,7 +20,7 @@ The handler is plain Go (1.24). These are the main dependencies:
 | [aws-lambda-go](https://github.com/aws/aws-lambda-go) | Lambda handler and Function URL request type |
 | [aws-sdk-go-v2](https://github.com/aws/aws-sdk-go-v2) (SSM) | Read app ID, key, and webhook secret from Parameter Store |
 | [ghinstallation](https://github.com/bradleyfalzon/ghinstallation) | GitHub App auth and installation access tokens |
-| [go-github](https://github.com/google/go-github) | GitHub REST API (Contents API, `repository_dispatch`, etc.) |
+| [go-github](https://github.com/google/go-github) | GitHub REST API (GetContents for config, Dispatch for fan-out) |
 | [viper](https://github.com/spf13/viper) | Parse `.github/app-config.yaml` in the sample |
 | [zap](https://github.com/uber-go/zap) | Structured logs to CloudWatch |
 
@@ -38,7 +38,7 @@ flowchart TB
         App[GitHub App]
         Webhook[Webhook POST]
         ContentsAPI[Contents API]
-        RestAPI[GitHub REST API]
+        DispatchAPI[repository_dispatch]
     end
     subgraph aws [AWS]
         FuncURL[Lambda Function URL]
@@ -51,8 +51,8 @@ flowchart TB
     FuncURL --> Lambda
     Lambda -->|init| SSM
     Lambda -->|HMAC verify| Lambda
-    Lambda -->|sample| ContentsAPI
-    Lambda -->|sample| RestAPI
+    Lambda -->|read app-config.yaml| ContentsAPI
+    Lambda -->|fan-out| DispatchAPI
     Lambda --> CW
 {{< /mermaid >}}
 
@@ -75,7 +75,10 @@ sequenceDiagram
     alt unsupported event
         L-->>GH: 200
     else supported
-        L->>API: installation token + handler
+        L->>API: GetContents .github/app-config.yaml
+        loop each target
+            L->>API: repository_dispatch
+        end
         L-->>GH: 200 or 500
     end
 {{< /mermaid >}}
